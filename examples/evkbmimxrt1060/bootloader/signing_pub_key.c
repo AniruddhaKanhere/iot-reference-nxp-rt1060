@@ -28,8 +28,8 @@
 
 #if defined( MCUBOOT_SIGN_RSA )
 
-#error Please use MCUBoot imgtool.py to generate an RSA signing key \
-    and replace this file with the output of the tool.
+//#error Please use MCUBoot imgtool.py to generate an RSA signing key \
+//    and replace this file with the output of the tool.
 
 const unsigned char rsa_pub_key[] = { 0x00 };
 const unsigned int rsa_pub_key_len = 0;

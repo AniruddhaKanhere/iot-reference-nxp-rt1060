@@ -1,0 +1,12 @@
+"Task Aware Debugger for GDB" version 11.7.0 (202212092054)
+(c) 2016-2022 NXP Semiconductors, Inc.
+==================================
+11:16:19.521 INFO: [ZephyrRTOS] .config file could not be read [C:\Users\kanherea\Desktop\Incremental_changes\temp\projects\evkmimxrt1060\defender\Debug\.config (The system cannot find the file specified)]
+11:16:19.522 INFO: [TadModel] DSF session ID 0 has started.
+11:18:09.642 INFO: [TadState] TAD state changed: DEBUG_STARTED -> DEBUG_INIT_0 (RESUMED, USER_REQUEST)
+11:18:09.713 INFO: [TadState] TAD state changed: DEBUG_INIT_0 -> DEBUG_INIT_1 (SUSPENDED, SIGNAL)
+11:18:21.586 INFO: [TadState] TAD state changed: DEBUG_INIT_1 -> DEBUG_SUSPENDED (RESUMED, USER_REQUEST)
+11:18:21.827 INFO: [TadState] TAD state changed: DEBUG_SUSPENDED -> DEBUG_SUSPENDED (SUSPENDED, BREAKPOINT)
+11:19:13.490 INFO: [TadState] TAD state changed: DEBUG_SUSPENDED -> DEBUG_RESUMED (RESUMED, USER_REQUEST)
+11:19:44.834 INFO: [TadState] TAD state changed: DEBUG_RESUMED -> READY (SUSPENDED, SIGNAL)
+11:19:46.662 INFO: [TadModel] DSF session ID 0 has ended.

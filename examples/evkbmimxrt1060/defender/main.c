@@ -37,13 +37,11 @@
 #include "board.h"
 
 #include "fsl_phy.h"
-/* lwIP Includes */
-#include "lwip/tcpip.h"
-#include "lwip/dhcp.h"
-#include "lwip/prot/dhcp.h"
-#include "netif/ethernet.h"
+/* FreeRTOS+TCP Includes */
+#include "FreeRTOS_IP.h"
+
 #include "enet_ethernetif.h"
-#include "lwip/netifapi.h"
+
 #include "fsl_phyksz8081.h"
 #include "fsl_enet_mdio.h"
 #include "fsl_gpio.h"
@@ -67,12 +65,6 @@
 #define EXAMPLE_NETIF_INIT_FN    ethernetif0_init
 #endif /* EXAMPLE_NETIF_INIT_FN */
 
-/* MAC address configuration. */
-#define configMAC_ADDR                     \
-    {                                      \
-        0x02, 0x12, 0x13, 0x10, 0x15, 0x25 \
-    }
-
 /* Address of PHY interface. */
 #define EXAMPLE_PHY_ADDRESS    BOARD_ENET0_PHY_ADDRESS
 
@@ -91,16 +83,20 @@
  ******************************************************************************/
 void Board_InitNetwork( void );
 
-static const char * prvGetDHCPStateStr( dhcp_state_enum_t state );
-
-
 int app_main( void );
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static mdio_handle_t mdioHandle = { .ops = &EXAMPLE_MDIO_OPS };
-static phy_handle_t phyHandle = { .phyAddr = EXAMPLE_PHY_ADDRESS, .mdioHandle = &mdioHandle, .ops = &EXAMPLE_PHY_OPS };
+const uint8_t ucIPAddress[ ipIP_ADDRESS_LENGTH_BYTES ] = { 192, 168, 1, 3 };
+const uint8_t ucNetMask[ ipIP_ADDRESS_LENGTH_BYTES ] = { 0xFF, 0xFF, 0xFF, 0x00 };
+const uint8_t ucGatewayAddress[ ipIP_ADDRESS_LENGTH_BYTES ] = { 192, 168, 1, 1 };
+const uint8_t ucDNSServerAddress[ ipIP_ADDRESS_LENGTH_BYTES ] = { 208, 67, 222, 222 };
+/* MAC address configuration. */
+const uint8_t ucMACAddress[ ipMAC_ADDRESS_LENGTH_BYTES ] = { 0x02, 0x12, 0x13, 0x10, 0x15, 0x25 };
+
+//static mdio_handle_t mdioHandle = { .ops = &EXAMPLE_MDIO_OPS };
+//static phy_handle_t phyHandle = { .phyAddr = EXAMPLE_PHY_ADDRESS, .mdioHandle = &mdioHandle, .ops = &EXAMPLE_PHY_OPS };
 
 struct netif ethernet_netif;
 
@@ -127,127 +123,17 @@ static mflash_file_t dir_template[] =
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static const char * prvGetDHCPStateStr( dhcp_state_enum_t state )
-{
-    const char * pcStateStr = "UNKNOWN";
-
-    switch( state )
-    {
-        case DHCP_STATE_OFF:
-            pcStateStr = "OFF";
-            break;
-
-        case DHCP_STATE_INIT:
-            pcStateStr = "INIT";
-            break;
-
-        case DHCP_STATE_REBOOTING:
-            pcStateStr = "REBOOTING";
-            break;
-
-        case DHCP_STATE_REBINDING:
-            pcStateStr = "REBINDING";
-            break;
-
-        case DHCP_STATE_RENEWING:
-            pcStateStr = "RENEWING";
-            break;
-
-        case DHCP_STATE_SELECTING:
-            pcStateStr = "SELECTING";
-            break;
-
-        case DHCP_STATE_INFORMING:
-            pcStateStr = "INFORMING";
-            break;
-
-        case DHCP_STATE_CHECKING:
-            pcStateStr = "CHECKING";
-            break;
-
-        case DHCP_STATE_PERMANENT:
-            pcStateStr = "PERMANENT";
-            break;
-
-        case DHCP_STATE_BOUND:
-            pcStateStr = "BOUND";
-            break;
-
-        case DHCP_STATE_RELEASING:
-            pcStateStr = "RELEASING";
-            break;
-
-        case DHCP_STATE_BACKING_OFF:
-            pcStateStr = "BACKING_OFF";
-            break;
-
-        default:
-            break;
-    }
-
-    return pcStateStr;
-}
-
 void Board_InitNetwork( void )
 {
-    ip4_addr_t netif_ipaddr, netif_netmask, netif_gw;
-    ethernetif_config_t enet_config =
-    {
-        .phyHandle  = &phyHandle,
-        .macAddress = configMAC_ADDR,
-    };
-    dhcp_state_enum_t prevState = DHCP_STATE_OFF;
+	BaseType_t xResult;
 
-    mdioHandle.resource.csrClock_Hz = EXAMPLE_CLOCK_FREQ;
+	xResult = FreeRTOS_IPInit( ucIPAddress,
+	                           ucNetMask,
+	                           ucGatewayAddress,
+	                           ucDNSServerAddress,
+							   ucMACAddress );
 
-    IP4_ADDR( &netif_ipaddr, 0, 0, 0, 0 );
-    IP4_ADDR( &netif_netmask, 0, 0, 0, 0 );
-    IP4_ADDR( &netif_gw, 0, 0, 0, 0 );
-
-    tcpip_init( NULL, NULL );
-
-    netifapi_netif_add( &ethernet_netif, &netif_ipaddr, &netif_netmask, &netif_gw, &enet_config, EXAMPLE_NETIF_INIT_FN,
-                        tcpip_input );
-    netifapi_netif_set_default( &ethernet_netif );
-    netifapi_netif_set_up( &ethernet_netif );
-
-    PRINTF( "Getting an IP address from DHCP ...\r\n" );
-    netifapi_dhcp_start( &ethernet_netif );
-
-    struct dhcp * dhcp;
-
-    dhcp = ( struct dhcp * ) netif_get_client_data( &ethernet_netif, LWIP_NETIF_CLIENT_DATA_INDEX_DHCP );
-
-    while( dhcp->state != DHCP_STATE_BOUND )
-    {
-        if( dhcp->state != prevState )
-        {
-            PRINTF( "DHCP State: %s.\r\n", prvGetDHCPStateStr( dhcp->state ) );
-            prevState = dhcp->state;
-        }
-
-        vTaskDelay( 1000 );
-    }
-
-    PRINTF( "DHCP OK!\r\n" );
-
-    PRINTF( "IPv4 Address: %u.%u.%u.%u\r\n",
-            ( ( u8_t * ) &ethernet_netif.ip_addr.addr )[ 0 ],
-            ( ( u8_t * ) &ethernet_netif.ip_addr.addr )[ 1 ],
-            ( ( u8_t * ) &ethernet_netif.ip_addr.addr )[ 2 ],
-            ( ( u8_t * ) &ethernet_netif.ip_addr.addr )[ 3 ] );
-
-    PRINTF( "Subnet Mask: %u.%u.%u.%u\r\n",
-            ( ( u8_t * ) &ethernet_netif.netmask.addr )[ 0 ],
-            ( ( u8_t * ) &ethernet_netif.netmask.addr )[ 1 ],
-            ( ( u8_t * ) &ethernet_netif.netmask.addr )[ 2 ],
-            ( ( u8_t * ) &ethernet_netif.netmask.addr )[ 3 ] );
-
-    PRINTF( "Gateway: %u.%u.%u.%u\r\n",
-            ( ( u8_t * ) &ethernet_netif.gw.addr )[ 0 ],
-            ( ( u8_t * ) &ethernet_netif.gw.addr )[ 1 ],
-            ( ( u8_t * ) &ethernet_netif.gw.addr )[ 2 ],
-            ( ( u8_t * ) &ethernet_netif.gw.addr )[ 3 ] );
+	assert( xResult == pdPASS );
 }
 
 void BOARD_InitModuleClock( void )
@@ -296,16 +182,6 @@ int main( void )
     GPIO_WritePinOutput( GPIO1, 9, 0 );
     delay();
     GPIO_WritePinOutput( GPIO1, 9, 1 );
-
-    if( CRYPTO_InitHardware() != 0 )
-    {
-        PRINTF( ( "\r\nFailed to initialize MBEDTLS crypto.\r\n" ) );
-
-        while( 1 )
-        {
-            /* Empty while. */
-        }
-    }
 
     if( mflash_drv_init() != 0 )
     {
@@ -441,6 +317,178 @@ void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
     *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
 }
 /*-----------------------------------------------------------*/
+
+BaseType_t xApplicationDNSQueryHook( const char * pcName )
+{
+	return 0;
+}
+
+BaseType_t xApplicationGetRandomNumber( uint32_t * pulNumber )
+{
+	*pulNumber = 0x1234ABCD;
+	return pdTRUE;
+}
+
+void SendARP_task( void * arg )
+#if 0
+{
+	uint32_t ipADDR_DST;
+	FreeRTOS_inet_pton( FREERTOS_AF_INET, "192.168.1.2", &ipADDR_DST );
+	static uint16_t i = 0;
+	while( 1 )
+	{
+		FreeRTOS_OutputARPRequest( ipADDR_DST );
+
+		FreeRTOS_SendPingRequest( ipADDR_DST, 20, 20 );
+		configPRINTF(("Sent %u", i++ ));
+
+		//vTaskDelay( pdMS_TO_TICKS( 500 ) );
+	}
+}
+#else
+{
+	static const TickType_t xReceiveTimeOut = portMAX_DELAY;
+	static struct freertos_sockaddr xClient, xBindAddress;
+	static Socket_t serverSocket, xConnectedSocket;
+	static uint8_t recvBuffer[200];
+	static socklen_t xSize;
+	BaseType_t xBacklog = 1;
+
+	while( 1 )
+	{
+		serverSocket = FreeRTOS_socket( FREERTOS_AF_INET,
+										FREERTOS_SOCK_STREAM,
+										FREERTOS_SOCK_DEPENDENT_PROTO );
+
+		configASSERT( serverSocket != FREERTOS_INVALID_SOCKET );
+
+		/* Set a time out so accept() will just wait for a connection. */
+		FreeRTOS_setsockopt( serverSocket,
+							 0,
+							 FREERTOS_SO_RCVTIMEO,
+							 &xReceiveTimeOut,
+							 sizeof( xReceiveTimeOut ) );
+
+		/* Set a time out so accept() will just wait for a connection. */
+		FreeRTOS_setsockopt( serverSocket,
+							 0,
+							 FREERTOS_SO_REUSE_LISTEN_SOCKET,
+							 NULL,
+							 0 );
+
+		/* Set the listening port to 10000. */
+		xBindAddress.sin_port = ( uint16_t ) 10000;
+		xBindAddress.sin_port = FreeRTOS_htons( xBindAddress.sin_port );
+
+		/* Bind the socket to the port that the client RTOS task will send to. */
+		FreeRTOS_bind( serverSocket, &xBindAddress, sizeof( xBindAddress ) );
+
+		/* Set the socket into a listening state so it can accept connections.
+		The maximum number of simultaneous connections is limited to 20. */
+		FreeRTOS_listen( serverSocket, xBacklog );
+
+		/* Wait for incoming connections. */
+		xConnectedSocket = FreeRTOS_accept( serverSocket, &xClient, &xSize );
+
+		if( xConnectedSocket != FREERTOS_INVALID_SOCKET )
+		{
+
+		while( 1 )
+		{
+			memset( recvBuffer, 0, 200 );
+			if( FreeRTOS_recv( serverSocket, recvBuffer, 200, 0 ) > 0 )
+			{
+                static uint8_t display = 0;
+                char out;
+                switch( display )
+                {
+                    case 0:
+                    	out = '\\';
+                    	break;
+                    case 1:
+                        out = '|';
+                        break;
+                    case 2:
+                        out = '/';
+                        break;
+                    case 3:
+                        out = '-';
+                        break;
+                }
+                display++;
+                if(display > 3)
+                	display = 0;
+
+                configPRINTF( ( "\b%c", out ) );
+
+				FreeRTOS_send( serverSocket, recvBuffer, strlen( recvBuffer ), 0 );
+			}
+			else
+			{
+				configPRINTF( ( "ERROR Receiving!" ) );
+				FreeRTOS_shutdown( serverSocket, 0U );
+				FreeRTOS_closesocket( serverSocket );
+				break;
+			}
+		}
+		}
+	}
+
+	vTaskDelete( NULL );
+}
+#endif
+#if ( ipconfigUSE_NETWORK_EVENT_HOOK == 1 )
+    /* This function shall be defined by the application. */
+    void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
+    {
+    	uint32_t ulIPAddress, ulNetMask, ulGatewayAddress, ulDNSServerAddress;
+    	char cBuffer[ 16 ];
+    	static uint8_t flag = pdFALSE;
+
+    	if( eNetworkEvent == eNetworkUp )
+    	{
+			FreeRTOS_GetAddressConfiguration( &ulIPAddress, &ulNetMask, &ulGatewayAddress, &ulDNSServerAddress );
+			FreeRTOS_inet_ntoa( ulIPAddress, cBuffer );
+			FreeRTOS_printf( ( "\r\n\r\nIP Address: %s\r\n", cBuffer ) );
+
+			FreeRTOS_inet_ntoa( ulNetMask, cBuffer );
+			FreeRTOS_printf( ( "Subnet Mask: %s\r\n", cBuffer ) );
+
+			FreeRTOS_inet_ntoa( ulGatewayAddress, cBuffer );
+			FreeRTOS_printf( ( "Gateway Address: %s\r\n", cBuffer ) );
+
+			FreeRTOS_inet_ntoa( ulDNSServerAddress, cBuffer );
+			FreeRTOS_printf( ( "DNS Server Address: %s\r\n\r\n\r\n", cBuffer ) );
+
+			if( flag == pdFALSE )
+			{
+				xTaskCreate( SendARP_task, "SendTask", configMINIMAL_STACK_SIZE*5,
+							 NULL,
+							 1,
+							 NULL );
+				flag = pdTRUE;
+			}
+    	}
+    }
+#endif
+#if ( ipconfigSUPPORT_OUTGOING_PINGS == 1 )
+    void vApplicationPingReplyHook( ePingReplyStatus_t eStatus,
+                                    uint16_t usIdentifier )
+    {
+    	if( eStatus == eSuccess )
+    	{
+    	    configPRINTF( ( "Got ping reply. ID %u", usIdentifier ) );
+    	}
+    }
+#endif
+
+uint32_t ulApplicationGetNextSequenceNumber( uint32_t ulSourceAddress,
+                                             uint16_t usSourcePort,
+                                             uint32_t ulDestinationAddress,
+                                             uint16_t usDestinationPort )
+{
+	return 0xABCD1234;
+}
 
 /**
  * @brief This is to provide the memory that is used by the RTOS daemon/time task.

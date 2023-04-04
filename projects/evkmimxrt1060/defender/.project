@@ -47,29 +47,9 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>coreJSON</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/coreJSON/source</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT-Agent</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>device</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/core/devices/MIMXRT1062</locationURI>
-		</link>
-		<link>
-			<name>device-defender</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/AWS/device-defender/source</locationURI>
 		</link>
 		<link>
 			<name>drivers</name>
@@ -92,24 +72,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/linkscripts</locationURI>
 		</link>
 		<link>
-			<name>lwip</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>mbedtls</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>mdio</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/core/components/phy/mdio/enet</locationURI>
-		</link>
-		<link>
-			<name>ota</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/AWS/ota</locationURI>
 		</link>
 		<link>
 			<name>phy</name>
@@ -137,11 +102,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>tinycbor</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/tinycbor</locationURI>
-		</link>
-		<link>
 			<name>utilities</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -165,26 +125,6 @@
 			<name>component/uart</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/core/components/uart</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT/source</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/coreMQTT/source</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT/transport_mbedtls</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/transport_mbedtls</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT-Agent/port</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/mqtt-agent-interface</locationURI>
-		</link>
-		<link>
-			<name>coreMQTT-Agent/source</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/coreMQTT-Agent/source</locationURI>
 		</link>
 		<link>
 			<name>drivers/fsl_cache.c</name>
@@ -317,44 +257,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/core/drivers/trng/fsl_trng.h</locationURI>
 		</link>
 		<link>
-			<name>lwip/port</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>lwip/src</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/lwip/src</locationURI>
-		</link>
-		<link>
-			<name>mbedtls/include</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/mbedtls/include</locationURI>
-		</link>
-		<link>
-			<name>mbedtls/library</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/mbedtls/library</locationURI>
-		</link>
-		<link>
-			<name>mbedtls/port</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>pkcs11/corePKCS11</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/corePKCS11/source</locationURI>
-		</link>
-		<link>
 			<name>pkcs11/include</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/pkcs11</locationURI>
-		</link>
-		<link>
-			<name>pkcs11/source</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/pkcs11</locationURI>
 		</link>
 		<link>
 			<name>secure_element/hostlib</name>
@@ -372,64 +277,14 @@
 			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/app_main.c</locationURI>
 		</link>
 		<link>
-			<name>source/cli</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/common/cli</locationURI>
-		</link>
-		<link>
-			<name>source/defender_metrics.h</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/defender_metrics.h</locationURI>
-		</link>
-		<link>
-			<name>source/defender_metrics_collector.h</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/defender_metrics_collector.h</locationURI>
-		</link>
-		<link>
-			<name>source/defender_report_builder.h</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/defender_report_builder.h</locationURI>
-		</link>
-		<link>
-			<name>source/defender_report_builder_cbor.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/defender_report_builder_cbor.c</locationURI>
-		</link>
-		<link>
-			<name>source/device_defender_task.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/device_defender_task.c</locationURI>
-		</link>
-		<link>
-			<name>source/kvstore</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/common/kvstore</locationURI>
-		</link>
-		<link>
 			<name>source/logging</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/examples/common/logging</locationURI>
 		</link>
 		<link>
-			<name>source/lwip_metrics_collector.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/lwip_metrics_collector.c</locationURI>
-		</link>
-		<link>
 			<name>source/main.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/examples/evkbmimxrt1060/defender/main.c</locationURI>
-		</link>
-		<link>
-			<name>source/mqtt_agent</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/common/mqtt_agent</locationURI>
-		</link>
-		<link>
-			<name>source/ota</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/examples/common/ota</locationURI>
 		</link>
 		<link>
 			<name>source/semihost_hardfault.c</name>
@@ -486,46 +341,6 @@
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/core/components/flash/mflash/mflash_file.h</locationURI>
 		</link>
-		<link>
-			<name>lwip/port/arch</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/lwip_osal/include/arch</locationURI>
-		</link>
-		<link>
-			<name>lwip/port/enet_ethernetif.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/lwip_ethernet/enet_ethernetif.c</locationURI>
-		</link>
-		<link>
-			<name>lwip/port/enet_ethernetif.h</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/lwip_ethernet/enet_ethernetif.h</locationURI>
-		</link>
-		<link>
-			<name>lwip/port/enet_ethernetif_kinetis.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/lwip_ethernet/enet_ethernetif_kinetis.c</locationURI>
-		</link>
-		<link>
-			<name>lwip/port/enet_ethernetif_priv.h</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/lwip_ethernet/enet_ethernetif_priv.h</locationURI>
-		</link>
-		<link>
-			<name>lwip/port/sys_arch.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/FreeRTOS/lwip_osal/src/sys_arch.c</locationURI>
-		</link>
-		<link>
-			<name>mbedtls/port/ksdk</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/mbedtls_port/ksdk</locationURI>
-		</link>
-		<link>
-			<name>mbedtls/port/mbedtls_freertos.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Middleware/NXP/mbedtls_port/mbedtls_freertos.c</locationURI>
-		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
@@ -574,42 +389,6 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1640798696866</id>
-			<name>ota</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-source</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1640798696880</id>
-			<name>ota</name>
-			<type>6</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-*</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1640798916246</id>
-			<name>tinycbor</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-src</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1640798916262</id>
-			<name>tinycbor</name>
-			<type>6</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-*</arguments>
-			</matcher>
-		</filter>
-		<filter>
 			<id>1637631424211</id>
 			<name>component/serial_manager</name>
 			<type>5</type>
@@ -646,15 +425,6 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1638402774090</id>
-			<name>coreMQTT-Agent/source</name>
-			<type>10</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-dependency</arguments>
-			</matcher>
-		</filter>
-		<filter>
 			<id>1637633559421</id>
 			<name>freertos/portable</name>
 			<type>9</type>
@@ -670,33 +440,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-Memmang</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1637706919000</id>
-			<name>lwip/src</name>
-			<type>10</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-apps</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1645662801728</id>
-			<name>mbedtls/library</name>
-			<type>6</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-psa_*</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1639622211516</id>
-			<name>pkcs11/corePKCS11</name>
-			<type>10</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-portable</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -796,15 +539,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-heap_4.c</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1637706966631</id>
-			<name>lwip/src/netif</name>
-			<type>10</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-ppp</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -940,15 +674,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-se05x</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1639622271345</id>
-			<name>pkcs11/corePKCS11/dependency/3rdparty</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-mbedtls_utils</arguments>
 			</matcher>
 		</filter>
 		<filter>
